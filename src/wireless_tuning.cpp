@@ -7,9 +7,6 @@
 
 #define WL_TUNE_MAX_PACKETSIZE  255
 
-
-// const uint8_t *probe_rsp = (const uint8_t *)"STUDIO_YES";
-// const char *probe_msg = "STUDIO_PROBE";
 WirelessTuning::WirelessTuning( uint16_t localPort) 
   : _localPort(localPort), _packetSize(0), _packetIndex(0), _remotePort(UINT16_MAX)
 {
@@ -31,11 +28,11 @@ bool WirelessTuning::begin(const char* ssid, const char* password,
         // Connect to WiFi network
         WiFi.begin(ssid, password);
         unsigned long start_time = millis();
+        Serial.println("WiFi SSID: %s, Password: %s\n");
         while (WiFi.status() != WL_CONNECTED && millis() - start_time < 10000) {
+            Serial.println("Connecting to WiFi.");
             delay(1000);
-            Serial.println("Connecting to WiFi...");
         }
-        
         success = (WiFi.status() == WL_CONNECTED);
     } else {
         // Invalid mode
@@ -48,7 +45,7 @@ bool WirelessTuning::begin(const char* ssid, const char* password,
     }
 
     Serial.printf("Connected to WiFi.\n");
-    Serial.printf("IP address: %s", WiFi.localIP().toString());
+    Serial.printf("IP address: %s.\n", WiFi.localIP().toString().c_str());
     
     _server = WiFiServer(_localPort);
     _server.begin(_localPort);

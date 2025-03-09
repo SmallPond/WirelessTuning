@@ -28,7 +28,7 @@ bool WirelessTuning::begin(const char* ssid, const char* password,
         // Connect to WiFi network
         WiFi.begin(ssid, password);
         unsigned long start_time = millis();
-        Serial.println("WiFi SSID: %s, Password: %s\n");
+        Serial.printf("WiFi SSID: %s, Password: %s.\n", ssid, password);
         while (WiFi.status() != WL_CONNECTED && millis() - start_time < 10000) {
             Serial.println("Connecting to WiFi.");
             delay(1000);
@@ -45,7 +45,8 @@ bool WirelessTuning::begin(const char* ssid, const char* password,
     }
 
     Serial.printf("Connected to WiFi.\n");
-    Serial.printf("IP address: %s.\n", WiFi.localIP().toString().c_str());
+    Serial.printf("Listen on IP address: [%s:%d].\n", WiFi.localIP().toString().c_str(),
+                                                 _localPort);
     
     _server = WiFiServer(_localPort);
     _server.begin(_localPort);
